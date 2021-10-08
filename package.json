@@ -1,20 +1,13 @@
 {
   "name": "saemp-frontend",
   "version": "1.0.0",
-  "description": "Sistema de Administración Escolar Max Planck",
+  "description": "Sistema de Administración Educativa Max Planck",
   "author": {
     "name": "Miriam Encarnacion",
     "github": "https://github.com/mrholek"
   },
-  "contributors": [
-    {
-      "name": "Andrzej Kopański",
-      "url": "https://github.com/xidedix"
-    }
-  ],
   "homepage": "https://coreui.io/pro/angular",
-  "copyright": "Copyright 2020 creativeLabs Łukasz Holeczek",
-  "license": "https://coreui.io/pro/license/",
+  "copyright": "Copyright 2021 Miriam Encarnación",
   "scripts": {
     "ng": "ng",
     "postinstall": "ngcc --properties es2015 browser module main --first-only",
