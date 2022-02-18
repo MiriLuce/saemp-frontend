@@ -1,0 +1,290 @@
+
+  <form [formGroup]="applicationForm" novalidate (ngSubmit)="onSubmit()" class="needs-validation">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header">
+            <i class="icon-note"></i> Identificaci&oacute;n
+          </div>        
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md-12">              
+                <div class="row">
+                  <div class="form-group col-md-6">
+                    <label class="col-form-label" for="typeDocumentIdentity">{{formProperties.typeDocumentIdentity.title}}</label>
+                    <select 
+                        id="typeDocumentIdentity" 
+                        name="typeDocumentIdentity" 
+                        class="form-control" 
+                        required  >
+                        <option *ngFor="let item of typeDocumentIdentityList" value="{{item.idTypeDocumentIdentity}}">{{item.name}}</option>
+                    </select>
+                  </div>
+                  <div class="form-group col-md-6">
+                    <label class="col-form-label" for="documentIdentity">{{formProperties.documentIdentity.title}}</label>
+                    <input class="form-control"
+                          id="documentIdentity"
+                          type="text"
+                          formControlName="documentIdentity"
+                          placeholder="{{formProperties.documentIdentity.title}}"
+                          required
+                          autofocus
+                          [ngClass]="{ 'is-invalid': this.isSubmitted && f.documentIdentity.errors, 
+                                       'is-valid': f.documentIdentity.touched && !f.documentIdentity.errors }" />
+                    <div *ngIf="this.isSubmitted && f['documentIdentity'].errors" class="invalid-feedback">
+                      <div *ngIf="f['documentIdentity'].errors.required">{{formProperties.documentIdentity.errorMessages.required}}</div>
+                    </div>
+                  </div>
+                  <div class="form-group col-md-6">
+                    <label class="col-form-label" for="firstName">{{formProperties.firstName.title}}</label>
+                    <input class="form-control"
+                          id="firstName"
+                          type="text"
+                          formControlName="firstName"
+                          placeholder="{{formProperties.firstName.title}}"
+                          autocomplete="given-name"
+                          required
+                          autofocus
+                          [ngClass]="{ 'is-invalid': this.isSubmitted && f.firstName.errors,
+                                       'is-valid': f.firstName.touched && !f.firstName.errors }" />
+                    <div *ngIf="this.isSubmitted && f['firstName'].errors" class="invalid-feedback">
+                      <div *ngIf="f['firstName'].errors.required">{{formProperties.firstName.errorMessages.required}}</div>
+                    </div>
+                  </div>
+                  <div class="form-group col-md-6">
+                    <label class="col-form-label" for="middleName">{{formProperties.middleName.title}}</label>
+                    <input class="form-control"
+                          id="middleName"
+                          type="text"
+                          formControlName="middleName"
+                          placeholder="{{formProperties.middleName.title}}"
+                          autocomplete="family-name"
+                          required />
+                  </div>
+                  <div class="form-group col-md-6">
+                    <label class="col-form-label" for="fatherlastName">{{formProperties.fatherlastName.title}}</label>
+                    <input class="form-control"
+                          id="fatherlastName"
+                          type="text"
+                          formControlName="fatherlastName"
+                          placeholder="{{formProperties.fatherlastName.title}}"
+                          autocomplete="family-name"
+                          required
+                          [ngClass]="{ 'is-invalid': this.isSubmitted && f.fatherlastName.errors,
+                                       'is-valid': f.fatherlastName.touched && !f.fatherlastName.errors }" />
+                    <div *ngIf="this.isSubmitted && f['fatherlastName'].errors" class="invalid-feedback">
+                      <div *ngIf="f['fatherlastName'].errors.required">{{formProperties.fatherlastName.errorMessages.required}}</div>
+                    </div>
+                  </div>
+                  <div class="form-group col-md-6">
+                    <label class="col-form-label" for="motherlastName">{{formProperties.motherlastName.title}}</label>
+                    <input class="form-control"
+                          id="motherlastName"
+                          type="text"
+                          formControlName="motherlastName"
+                          placeholder="{{formProperties.motherlastName.title}}"
+                          autocomplete="given-name"
+                          required
+                          autofocus
+                          [ngClass]="{ 'is-invalid': this.isSubmitted && f.motherlastName.errors,
+                                       'is-valid': f.motherlastName.touched && !f.motherlastName.errors }" />
+                    <div *ngIf="this.isSubmitted && f['motherlastName'].errors" class="invalid-feedback">
+                      <div *ngIf="f['motherlastName'].errors.required">{{formProperties.motherlastName.errorMessages.required}}</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header">
+            <i class="icon-note"></i> Nacimiento
+          </div>        
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md-12">              
+                <div class="row">
+                  <div class="form-group col-md-6">
+                    <label class="col-form-label" for="birthdate">{{formProperties.birthdate.title}}</label>
+                    <input class="form-control" 
+                          id="birthdate" 
+                          name="birthdate"
+                          type="text" 
+                          formControlName="birthdate" 
+                          placeholder="{{formProperties.birthdate.title}}"
+                          required
+                          autofocus
+                          [minDate]="minBirthdate"
+                          [maxDate]="maxBirthdate"
+                          #dp="bsDatepicker"
+                          bsDatepicker 
+                          [(ngModel)]="studentBirthdate"
+                          [ngClass]="{ 'is-invalid': this.isSubmitted && f.birthdate.errors,
+                                       'is-valid': !f.birthdate.errors }">
+                    <div *ngIf="this.isSubmitted && f['birthdate'].errors" class="invalid-feedback">
+                      <div *ngIf="f['birthdate'].errors.required">{{formProperties.birthdate.errorMessages.required}}</div>
+                    </div>
+                  </div>
+                  <div class="form-group col-md-6">
+                    <label class="col-form-label" for="birthCountry">{{formProperties.birthCountry.title}}</label>
+                    <select id="birthCountry" name="birthCountry" class="form-control" (change)="onChangeCountry($event.target.value)">
+                        <option *ngFor="let item of this.countryList" value="{{item.idCountry}}">{{item.name}}</option>
+                    </select>
+                  </div>
+                  <div class="form-group col-md-12" *ngIf="this.selectedCountry != this.defaultCountry">
+                    <label class="col-form-label" for="reference">{{formProperties.reference.title}}</label>
+                    <input class="form-control"
+                          id="reference"
+                          type="text"
+                          formControlName="reference"
+                          placeholder="{{formProperties.reference.title}}"
+                          autocomplete="family-name"
+                          [ngClass]="{ 'is-invalid': this.isSubmitted && f.reference.errors,
+                                       'is-valid': f.reference.touched && !f.reference.errors }" />
+                    <div *ngIf="this.isSubmitted && f['reference'].errors" class="invalid-feedback">
+                      <div *ngIf="f['reference'].errors.required">{{formProperties.reference.errorMessages.required}}</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header">
+            <i class="icon-note"></i> Contacto
+          </div>        
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md-12">              
+                <div class="row">
+                  <div class="form-group col-md-12">
+                    <label class="col-form-label" for="email">{{formProperties.email.title}}</label>
+                    <input class="form-control" 
+                          id="email" 
+                          type="mail" 
+                          name="email"
+                          formControlName="email" 
+                          placeholder="{{formProperties.email.title}}"
+                          required
+                          autofocus
+                          [ngClass]="{ 'is-invalid': this.isSubmitted && f.email.errors,
+                                       'is-valid': f.email.touched && !f.email.errors }">
+                    <div *ngIf="this.isSubmitted && f['email'].errors" class="invalid-feedback">
+                      <div *ngIf="f['email'].errors.required">{{formProperties.email.errorMessages.required}}</div>
+                      <div *ngIf="f['email'].errors.email">{{formProperties.email.errorMessages.pattern}}</div>
+                    </div>
+                  </div>
+                  <div class="form-group col-md-6">
+                    <label class="col-form-label" for="residentDepartment">{{formProperties.residentDepartment.title}}</label>
+                    <select id="residentDepartment" name="residentDepartment" class="form-control" (change)="onChangeDepartment($event.target.value)" >
+                        <option *ngFor="let item of this.departmentList" value="{{item.idDepartment}}">{{item.name}}</option>
+                    </select>
+                  </div>
+                  <div class="form-group col-md-6" *ngIf="this.selectedDepartment == this.defaultDepartment">
+                    <label class="col-form-label" for="residentDistrict">{{formProperties.residentDistrict.title}}</label>
+                    <select id="residentDistrict" name="residentDistrict" class="form-control" (change)="onChangeDistrict($event.target.value)" >
+                        <option *ngFor="let item of this.districtList" value="{{item.idDistrict}}">{{item.name}}</option>
+                    </select>
+                  </div>
+                  <div class="form-group col-md-12">
+                    <label class="col-form-label" for="address">{{formProperties.address.title}}</label>
+                    <input class="form-control"
+                          id="address"
+                          type="text"
+                          formControlName="address"
+                          placeholder="{{formProperties.address.title}}"
+                          autocomplete="given-name"
+                          required
+                          autofocus
+                          [ngClass]="{ 'is-invalid': this.isSubmitted && f.address.errors,
+                                       'is-valid': f.address.touched && !f.address.errors }" />
+                    <div *ngIf="this.isSubmitted && f['address'].errors" class="invalid-feedback">
+                      <div *ngIf="f['address'].errors.required">{{formProperties.address.errorMessages.required}}</div>
+                    </div>
+                  </div>             
+                  <div class="form-group col-md-12">
+                    <label class="col-form-label" for="addressReference">{{formProperties.addressReference.title}}</label>
+                    <input class="form-control"
+                          id="addressReference"
+                          type="text"
+                          formControlName="addressReference"
+                          placeholder="{{formProperties.addressReference.title}}"
+                          autocomplete="given-name"
+                          required
+                          autofocus
+                          [ngClass]="{ 'is-invalid': this.isSubmitted && f.addressReference.errors,
+                                       'is-valid': f.addressReference.touched && !f.addressReference.errors }" />
+                    <div *ngIf="this.isSubmitted && f['addressReference'].errors" class="invalid-feedback">
+                      <div *ngIf="f['addressReference'].errors.required">{{formProperties.addressReference.errorMessages.required}}</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header">
+            <i class="icon-note"></i> Salud
+          </div>        
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label class="col-form-label" for="allergies">{{formProperties.allergies.title}}</label>
+                  <input class="form-control"
+                        id="allergies"
+                        type="text"
+                        formControlName="allergies"
+                        placeholder="{{formProperties.allergies.title}}"
+                        autocomplete="given-name"
+                        autofocus/>
+                </div>                
+                <div class="form-group">
+                  <label class="col-form-label" for="disease">{{formProperties.disease.title}}</label>
+                  <input class="form-control"
+                        id="disease"
+                        type="text"
+                        formControlName="disease"
+                        placeholder="{{formProperties.disease.title}}"
+                        autocomplete="given-name"
+                        autofocus />
+                </div>       
+                <div class="form-group">
+                  <label class="col-form-label" for="otherHealthProblem">{{formProperties.otherHealthProblem.title}}</label>
+                  <input class="form-control"
+                        id="otherHealthProblem"
+                        type="text"
+                        formControlName="otherHealthProblem"
+                        placeholder="{{formProperties.otherHealthProblem.title}}"
+                        autocomplete="given-name"
+                        autofocus />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">                
+        <div class="form-group">
+          <button class="btn btn-success mr-1 pull-right" type="submit">Siguiente</button>
+        </div>
+      </div>
+    </div>
+  </form>
