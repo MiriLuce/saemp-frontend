@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { ApplicationService } from './application.service';
+import { CommonListService } from './commonList.service';
 
-describe('ApplicationService', () => {
-  let service: ApplicationService;
+describe('CommonListService', () => {
+  let service: CommonListService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(ApplicationService);
+    service = TestBed.inject(CommonListService);
   });
 
   it('should be created', () => {

@@ -53,6 +53,27 @@ export const Properties = {
             required: 'La país de nacimiento es obligatorio'
         }
     },
+    birthDepartment: {
+        initialValue: '',
+        title: 'Departamento de nacimiento',
+        errorMessages: {
+            required: 'La departamento de nacimiento es obligatorio'
+        }
+    },
+    birthProvince: {
+        initialValue: '',
+        title: 'Provincia de nacimiento',
+        errorMessages: {
+            required: 'La provincia de nacimiento es obligatorio'
+        }
+    },
+    birthDistrict: {
+        initialValue: '',
+        title: 'Distrito de nacimiento',
+        errorMessages: {
+            required: 'El distrito de nacimiento es obligatorio'
+        }
+    },
     reference: {
         initialValue: '',
         title: 'Referencia de lugar de nacimiento',
@@ -73,6 +94,13 @@ export const Properties = {
         title: 'Departamento de domicilio',
         errorMessages: {
             required: 'El departamento de domicilio es obligatorio'
+        }
+    },
+    residentProvince: {
+        initialValue: '',
+        title: 'Provincia de domicilio',
+        errorMessages: {
+            required: 'La provincia de domicilio es obligatorio'
         }
     },
     residentDistrict: {
