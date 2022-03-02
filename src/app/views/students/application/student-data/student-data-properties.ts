@@ -10,7 +10,9 @@ export const Properties = {
         initialValue: '',
         title: 'Nro de documento',
         errorMessages: {
-            required: 'El número de documento es obligatorio'
+            required: 'El número de documento es obligatorio',
+            length: '',
+            pattern: ''
         }
     },
     firstName: {

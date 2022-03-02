@@ -14,7 +14,6 @@ export class CommonListService {
   constructor(private http: HttpClient) { }
 
   getTypeDocumentIdentityList() : Observable<ServiceResult> {
-    console.log(this.baseUrlWebApi); 
     return this.http.get<ServiceResult>(this.baseUrlWebApi + '/CommonList/TypeDocumentIdentity')
   }
 

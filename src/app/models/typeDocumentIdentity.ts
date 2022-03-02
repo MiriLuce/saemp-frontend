@@ -7,4 +7,5 @@ export interface TypeDocumentIdentity {
     nationalityType: string;
     characterType: string;
     isActive: boolean;
+    isDefault: boolean;
 }

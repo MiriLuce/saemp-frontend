@@ -1,5 +1,4 @@
-
-  <form [formGroup]="applicationForm" novalidate (ngSubmit)="onSubmit()" class="needs-validation">
+<form [formGroup]="applicationForm" novalidate (ngSubmit)="onSubmit()" class="needs-validation">
     <div class="row">
       <div class="col-md-12">
         <div class="card">
@@ -16,7 +15,7 @@
                         id="typeDocumentIdentity" 
                         name="typeDocumentIdentity" 
                         class="form-control" 
-                        required  >
+                        (change)="onChangeTypeDocumentIdentity($event.target.value)" >
                         <option *ngFor="let item of typeDocumentIdentityList" value="{{item.idTypeDocumentIdentity}}">{{item.name}}</option>
                     </select>
                   </div>
@@ -33,6 +32,8 @@
                                        'is-valid': f.documentIdentity.touched && !f.documentIdentity.errors }" />
                     <div *ngIf="this.isSubmitted && f['documentIdentity'].errors" class="invalid-feedback">
                       <div *ngIf="f['documentIdentity'].errors.required">{{formProperties.documentIdentity.errorMessages.required}}</div>
+                      <div *ngIf="f['documentIdentity'].errors.length">{{formProperties.documentIdentity.errorMessages.length}}</div>
+                      <div *ngIf="f['documentIdentity'].errors.pattern">{{formProperties.documentIdentity.errorMessages.pattern}}</div>
                     </div>
                   </div>
                   <div class="form-group col-md-6">
@@ -118,12 +119,11 @@
                           formControlName="birthdate" 
                           placeholder="{{formProperties.birthdate.title}}"
                           required
-                          autofocus
+                          autocomplete="off"
                           [minDate]="minBirthdate"
                           [maxDate]="maxBirthdate"
                           #dp="bsDatepicker"
                           bsDatepicker 
-                          [(ngModel)]="studentBirthdate"
                           [ngClass]="{ 'is-invalid': this.isSubmitted && f.birthdate.errors,
                                        'is-valid': !f.birthdate.errors }">
                     <div *ngIf="this.isSubmitted && f['birthdate'].errors" class="invalid-feedback">
@@ -132,25 +132,41 @@
                   </div>
                   <div class="form-group col-md-6">
                     <label class="col-form-label" for="birthCountry">{{formProperties.birthCountry.title}}</label>
-                    <select id="birthCountry" name="birthCountry" class="form-control" (change)="onChangeBirthCountry($event.target.value)">
+                    <select 
+                      id="birthCountry" 
+                      name="birthCountry" 
+                      class="form-control" 
+                      (change)="onChangeBirthCountry($event.target.value)">
                         <option *ngFor="let item of this.countryList" value="{{item.idCountry}}">{{item.name}}</option>
                     </select>
                   </div>
                   <div class="form-group col-md-6" *ngIf="this.selectedBirthCountry == this.defaultCountry">
                     <label class="col-form-label" for="birthDepartment">{{formProperties.birthDepartment.title}}</label>
-                    <select id="birthDepartment" name="birthDepartment" class="form-control" (change)="onChangeBirthDepartment($event.target.value)">
+                    <select 
+                      id="birthDepartment" 
+                      name="birthDepartment" 
+                      class="form-control" 
+                      (change)="onChangeBirthDepartment($event.target.value)">
                         <option *ngFor="let item of this.departmentList" value="{{item.idDepartment}}">{{item.name}}</option>
                     </select>
                   </div>
                   <div class="form-group col-md-6" *ngIf="this.selectedBirthCountry == this.defaultCountry">
                     <label class="col-form-label" for="birthProvince">{{formProperties.birthProvince.title}}</label>
-                    <select id="birthProvince" name="birthProvince" class="form-control" (change)="onChangeBirthProvince($event.target.value)">
+                    <select 
+                      id="birthProvince" 
+                      name="birthProvince" 
+                      class="form-control" 
+                      (change)="onChangeBirthProvince($event.target.value)">
                         <option *ngFor="let item of this.provinceBirthList" value="{{item.idProvince}}">{{item.name}}</option>
                     </select>
                   </div>
                   <div class="form-group col-md-6" *ngIf="this.selectedBirthCountry == this.defaultCountry">
                     <label class="col-form-label" for="birthDistrict">{{formProperties.birthDistrict.title}}</label>
-                    <select id="birthDistrict" name="birthDistrict" class="form-control" (change)="onChangeBirthDistrict($event.target.value)">
+                    <select 
+                      id="birthDistrict" 
+                      name="birthDistrict" 
+                      class="form-control" 
+                      (change)="onChangeBirthDistrict($event.target.value)">
                         <option *ngFor="let item of this.districtBirthList" value="{{item.idDistrict}}">{{item.name}}</option>
                     </select>
                   </div>
@@ -204,19 +220,31 @@
                   </div>
                   <div class="form-group col-md-6">
                     <label class="col-form-label" for="residentDepartment">{{formProperties.residentDepartment.title}}</label>
-                    <select id="residentDepartment" name="residentDepartment" class="form-control" (change)="onChangeResidentDepartment($event.target.value)" >
+                    <select 
+                      id="residentDepartment" 
+                      name="residentDepartment" 
+                      class="form-control" 
+                      (change)="onChangeResidentDepartment($event.target.value)" >
                         <option *ngFor="let item of this.departmentList" value="{{item.idDepartment}}">{{item.name}}</option>
                     </select>
                   </div>
                   <div class="form-group col-md-6">
                     <label class="col-form-label" for="residentProvince">{{formProperties.residentProvince.title}}</label>
-                    <select id="residentProvince" name="residentProvince" class="form-control" (change)="onChangeResidentProvince($event.target.value)" >
+                    <select 
+                      id="residentProvince" 
+                      name="residentProvince" 
+                      class="form-control" 
+                      (change)="onChangeResidentProvince($event.target.value)" >
                         <option *ngFor="let item of this.provinceResidentList" value="{{item.idProvince}}">{{item.name}}</option>
                     </select>
                   </div>
                   <div class="form-group col-md-6">
                     <label class="col-form-label" for="residentDistrict">{{formProperties.residentDistrict.title}}</label>
-                    <select id="residentDistrict" name="residentDistrict" class="form-control" (change)="onChangeResidentDistrict($event.target.value)" >
+                    <select 
+                      id="residentDistrict" 
+                      name="residentDistrict" 
+                      class="form-control" 
+                      (change)="onChangeResidentDistrict($event.target.value)" >
                         <option *ngFor="let item of this.districtResidentList" value="{{item.idDistrict}}">{{item.name}}</option>
                     </select>
                   </div>

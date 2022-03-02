@@ -3,7 +3,8 @@ import { Subscription } from 'rxjs';
 import { FormGroup, FormBuilder, Validators, FormControl, AbstractControl, FormGroupName } from '@angular/forms';
 import { ValidatorFn, ValidationErrors } from '@angular/forms';
 import { BsLocaleService } from 'ngx-bootstrap/datepicker';
-import { ToasterService, ToasterConfig } from 'angular2-toaster';
+import { ToasterService } from 'angular2-toaster';
+import { NgxSpinnerService } from "ngx-bootstrap-spinner";
 
 import { CommonListService } from './../../../../services/commonList.service';
 import { Properties } from './student-data-properties';
@@ -15,7 +16,7 @@ import { Department } from '../../../../models/department';
 import { Province } from '../../../../models/province';
 import { District } from '../../../../models/district';
 import { Application } from '../../../../models/application';
-
+  
 @Component({
   selector: 'app-student-data',
   templateUrl: './student-data.component.html',
@@ -23,8 +24,6 @@ import { Application } from '../../../../models/application';
   providers: [CommonListService]
 })
 export class StudentDataComponent implements OnInit, OnChanges {
-
-  public toasterconfig: ToasterConfig = new ToasterConfig({ tapToDismiss: true, timeout: 5000 });
 
   @Input() onNextStep: (application) => void;
 
@@ -41,6 +40,7 @@ export class StudentDataComponent implements OnInit, OnChanges {
   districtResidentList: District[];
 
   defaultCountry: number;
+  selectedTypeDocumentIdentity: TypeDocumentIdentity;
   selectedBirthCountry: number;
   selectedBirthDepartment: number;
   selectedBirthProvince: number;
@@ -51,50 +51,41 @@ export class StudentDataComponent implements OnInit, OnChanges {
 
   minBirthdate: Date;
   maxBirthdate: Date;
-  studentBirthdate: Date;
+  patternDocumentIdentity: String;
 
-  constructor(private builder: FormBuilder, 
+  constructor(
+    private builder: FormBuilder, 
     private localeService: BsLocaleService, 
     public commonListService: CommonListService, 
-    private toasterService: ToasterService) {
+    private toasterService: ToasterService,
+    private spinnerService: NgxSpinnerService
+  ) {
+      this.spinnerService.show();
 
-    this.formProperties = Properties;
-    this.createForm();
-    this.isSubmitted = false;
+      this.localeService.use('es');
+      this.minBirthdate = new Date();
+      this.minBirthdate.setFullYear(new Date().getFullYear() - 100);
+      this.maxBirthdate = new Date();  
 
-    this.localeService.use('es');
-    this.minBirthdate = new Date();
-    this.minBirthdate.setFullYear(new Date().getFullYear() - 18);
-    this.maxBirthdate = new Date();
-    
-    this.getTypeDocumentIdentityList();
-    this.getCoutryList();
-    this.getDepartmentList();
+      this.getTypeDocumentIdentityList();
+      this.getCoutryList();
+      this.getDepartmentList();
+  
+      this.formProperties = Properties;
+      this.isSubmitted = false;
+      this.createForm();  
   }
 
   ngOnInit(): void {
   }
 
-  ngOnChanges() {/*
-    if (this.countryList.length > 0) {
-      this.defaultCountry = this.countryList.find(item => item.isDefault).idCountry;
-      this.selectedBirthCountry = this.defaultCountry;
-    }
-    if (this.departmentList.length > 0) {
-      this.defaultDepartment = this.departmentList.find(item => item.isDefault).idDepartment;
-      this.selectedBirthDepartment = this.defaultDepartment;
-      this.selectedResidentDepartment = this.defaultDepartment;
-    }
-    if (this.districtList.length > 0) {
-      this.defaultDistrict = this.districtList.find(item => item.isDefault).idDistrict;
-      this.selectedResidentDistrict = this.defaultDistrict;
-    }*/
-  }
-
-  createForm() {
+  ngOnChanges() {
+  } 
+  
+  createForm() { 
     this.applicationForm = this.builder.group({
       typeDocumentIdentity: ['', []],
-      documentIdentity: ['', [Validators.required]],
+      documentIdentity: ['', [Validators.required, this.lengthValidator.bind(this), this.patternValidator.bind(this)]],
       firstName: ['', [Validators.required]],
       middleName: ['', []],
       fatherlastName: ['', [Validators.required]],
@@ -110,7 +101,7 @@ export class StudentDataComponent implements OnInit, OnChanges {
       allergies: ['', []],
       disease: ['', []],
       otherHealthProblem: ['', []]
-    }, {});
+    }, {  });
   }
 
   // convenience getter for easy access to form fields
@@ -151,19 +142,52 @@ export class StudentDataComponent implements OnInit, OnChanges {
     this.onNextStep(application);
   }
 
+  lengthValidator(control: AbstractControl): { [key: string]: boolean } | null {
+    if (this.selectedTypeDocumentIdentity == undefined || this.selectedTypeDocumentIdentity == null) {
+      return null;
+    }
+    let lengthType = this.selectedTypeDocumentIdentity.lengthType;
+    let length = this.selectedTypeDocumentIdentity.length;
+    if (control.value !== undefined && (
+       (lengthType == 'E' && control.value.length != length) || 
+       (lengthType == 'M' && control.value.length > length))) {
+        return { 'length': true };
+    }
+    return null;
+  }
+
+  patternValidator(control: AbstractControl): { [key: string]: boolean } | null {
+    if (this.selectedTypeDocumentIdentity == undefined || this.selectedTypeDocumentIdentity == null) {
+      return null;
+    }
+    let isValid = false;
+    if (this.selectedTypeDocumentIdentity.characterType == 'A'){
+      isValid = /^([A-Z0-9]+)$/.test(control.value);
+    } else if (this.selectedTypeDocumentIdentity.characterType == 'N'){
+      isValid = /^([0-9]+)$/.test(control.value);
+    }
+    if (control.value !== undefined && !isValid) {
+        return { 'pattern': true };
+    }
+    return null;
+  }
+
   // UBICATION SETTINGS
 
   getTypeDocumentIdentityList() {    
     this.commonListService.getTypeDocumentIdentityList().subscribe(
       (resp: ServiceResult) => {
-        this.toasterService.pop('success', 'Success Toaster', "Prueba");
+        this.spinnerService.hide();
         if (resp.error == null) {
           this.typeDocumentIdentityList = resp.data;
+          this.selectedTypeDocumentIdentity = this.typeDocumentIdentityList.find(item => item.isDefault); 
+          this.onChangeTypeDocumentIdentity(this.selectedTypeDocumentIdentity.idTypeDocumentIdentity); 
         } else {
           this.toasterService.pop('error', 'Error', resp.error);
         }
       },
       error => {
+        this.spinnerService.hide();
         this.toasterService.pop('error', 'Error', error);
       }
     );
@@ -252,6 +276,22 @@ export class StudentDataComponent implements OnInit, OnChanges {
         this.toasterService.pop('error', 'Error', error);
       }
     );
+  }
+
+  onChangeTypeDocumentIdentity(value) {
+    if (this.selectedTypeDocumentIdentity.idTypeDocumentIdentity != value){
+      this.selectedTypeDocumentIdentity = this.typeDocumentIdentityList.find(item => item.idTypeDocumentIdentity == value);
+    }
+    if (this.selectedTypeDocumentIdentity.characterType == 'A'){
+      this.formProperties.documentIdentity.errorMessages.pattern = 'El número de documento debe ser alfanumérico, con letras mayúsculas'
+    } else if (this.selectedTypeDocumentIdentity.characterType == 'N'){
+      this.formProperties.documentIdentity.errorMessages.pattern = 'El número de documento debe ser numérico'
+    }
+    if (this.selectedTypeDocumentIdentity.lengthType == 'E'){
+      this.formProperties.documentIdentity.errorMessages.length = `El número de documento debe contener ${this.selectedTypeDocumentIdentity.length} caractéres`;      
+    } else if (this.selectedTypeDocumentIdentity.lengthType == 'M'){
+      this.formProperties.documentIdentity.errorMessages.length = `El número de documento debe contener máximo ${this.selectedTypeDocumentIdentity.length} caractéres`;      
+    } 
   }
 
   onChangeBirthCountry(value) {

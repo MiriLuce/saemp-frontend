@@ -1,8 +1,6 @@
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA  } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { ReactiveFormsModule } from '@angular/forms';
-
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 
 // Routing
@@ -12,12 +10,12 @@ import { ApplicationComponent } from './application.component';
 import { StudentDataComponent } from './student-data/student-data.component';
 import { SchoolOriginComponent } from './school-origin/school-origin.component';
 
-import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
-import { BsLocaleService } from 'ngx-bootstrap/datepicker'
+import { BsDatepickerModule, BsLocaleService, BsDatepickerConfig  } from 'ngx-bootstrap/datepicker';
 import { defineLocale } from 'ngx-bootstrap/chronos';
 import { esLocale } from 'ngx-bootstrap/locale';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { ToasterModule } from 'angular2-toaster';
+import { NgxSpinnerModule } from "ngx-bootstrap-spinner";
 
 @NgModule({
     imports: [
@@ -29,11 +27,20 @@ import { ToasterModule } from 'angular2-toaster';
         BsDatepickerModule.forRoot(),
         TabsModule.forRoot(),
         ToasterModule.forRoot(),
+        NgxSpinnerModule
     ],
     declarations: [
         ApplicationComponent,
         StudentDataComponent,
         SchoolOriginComponent
+    ],
+    bootstrap: [
+        ApplicationComponent,
+        StudentDataComponent,
+        SchoolOriginComponent
+    ],
+    providers: [ 
+        BsDatepickerConfig
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

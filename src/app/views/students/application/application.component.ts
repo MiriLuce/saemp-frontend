@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { ToasterService, ToasterConfig } from 'angular2-toaster';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { ToasterConfig } from 'angular2-toaster';
 
 @Component({
   selector: 'app-application',
@@ -9,16 +9,17 @@ import { ToasterService, ToasterConfig } from 'angular2-toaster';
 export class ApplicationComponent implements OnInit {
   
   public toasterconfig: ToasterConfig = new ToasterConfig({ tapToDismiss: true, timeout: 5000 });
+  public currentTab: String;
 
-  constructor() {
+  constructor() { }
+
+  ngOnInit(): void { 
+    this.currentTab = "studentDataTab";
   }
-
-  ngOnInit(): void { }
 
   onGetStudentData(application) {
-    // TODO: Use EventEmitter with form value
-    console.warn(application.value);
-    alert('SUCCESS!');
+    this.currentTab = "relativeDataTab";
+    console.log(application);
   }
-  
+
 }

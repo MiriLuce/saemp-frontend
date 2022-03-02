@@ -29,7 +29,7 @@ import {
   AppBreadcrumbModule,
   AppHeaderModule,
   AppFooterModule,
-  AppSidebarModule
+  AppSidebarModule,
 } from '@coreui/angular';
 
 // Import routing module
